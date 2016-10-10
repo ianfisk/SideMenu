@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import {
   Animated,
-  Dimensions,
   PanResponder,
   StyleSheet,
   Text,
@@ -13,11 +12,9 @@ import {
 import Home from '../components/Home';
 import Main from '../components/Main';
 
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-
 class SideMenu extends Component {
   constructor(props) {
+    // TODO: Don't allow swiping the current screen past the leftmost bound of the menu no matter the size/margins of the menu
     super(props);
 
     this.state = {
@@ -38,13 +35,13 @@ class SideMenu extends Component {
   
   render() {
     return (
-      <View style={this.props.style}>
-        <View style={styles.menu}>
+      <View>
+        <View style={[styles.absolutePosition, this.props.menuStyle]}>
           {this.props.menu}
         </View>
         <Animated.View
           {...this.state.panResponder.panHandlers}
-          style={[this.state.pan.getLayout(), styles.children]}>
+          style={[this.state.pan.getLayout(), styles.absolutePosition, this.props.childrenStyle]}>
           {this.props.children}
         </Animated.View>
       </View>
@@ -65,15 +62,8 @@ class SideMenu extends Component {
 }
 
 var styles = StyleSheet.create({
-  menu: {
+  absolutePosition: {
     position: 'absolute',
-    width: screenWidth,
-    height: screenHeight,
-  },
-  children: {
-    position: 'absolute',
-    width: screenWidth,
-    height: screenHeight,
   },
 });
 

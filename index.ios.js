@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  Dimensions,
   StyleSheet,
   Text,
   View
@@ -12,6 +13,9 @@ import SideMenu from './src/containers/SideMenu';
 import Home from './src/components/Home';
 import Main from './src/components/Main';
 
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
 class SideMenuApp extends Component {
   render() {
     const menu = <Main />;
@@ -19,7 +23,8 @@ class SideMenuApp extends Component {
     return (
       <SideMenu
         menu={menu}
-        style={styles.menu}>
+        menuStyle={styles.menu}
+        childrenStyle={[styles.menu, {paddingTop: 20}]}>
         <Home />
       </SideMenu>
     );
@@ -28,9 +33,8 @@ class SideMenuApp extends Component {
 
 const styles = StyleSheet.create({
   menu: {
-    flex: 1,
-    backgroundColor: 'powderblue',
-    alignItems: 'center',
+    width: screenWidth,
+    height: screenHeight,
   },
 });
 

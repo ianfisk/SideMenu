@@ -20,8 +20,8 @@ class Main extends Component {
 const styles = StyleSheet.create({
   default: {
     flex: 1,
+    padding: 10,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'steelblue',
   },
 });
