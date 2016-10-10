@@ -29,8 +29,7 @@ class SideMenu extends Component {
       onMoveShouldSetPanResponder: () => true,
       onPanResponderGrant: this._handlePanResponderGrant.bind(this),
       onPanResponderMove: Animated.event([null, {
-        dx: this.state.pan.x, // x,y are Animated.Value
-        dy: this.state.pan.y, // this.state.pan.y = gestureState.dy (binds)
+        dx: this.state.pan.x, // this.state.pan.x = gestureState.dx (binds)
       }]),
       onPanResponderRelease: this._handlePanResponderEnd.bind(this),
       onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
@@ -55,7 +54,7 @@ class SideMenu extends Component {
   _handlePanResponderGrant(e: Object, gestureState: Object) {
     // offset == the origin, value == the amount added to the origin
     console.log("*****************************PanResponder GRANT");
-    this.state.pan.setOffset({x: this.state.pan.x._value, y: this.state.pan.y._value});
+    this.state.pan.setOffset({x: this.state.pan.x._value});
   }
 
   _handlePanResponderEnd(e: Object, gestureState: Object) {
