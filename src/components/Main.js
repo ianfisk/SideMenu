@@ -10,7 +10,7 @@ class Main extends Component {
     return (
       <View style={styles.default}>
         <Text>
-          Main!
+          Menu!
         </Text>
       </View>
     )

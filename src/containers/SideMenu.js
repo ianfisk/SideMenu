@@ -4,6 +4,7 @@
 import React, { Component } from 'react';
 import {
   Animated,
+  Dimensions,
   PanResponder,
   StyleSheet,
   Text,
@@ -12,7 +13,10 @@ import {
 import Home from '../components/Home';
 import Main from '../components/Main';
 
-class SideMenuClass extends Component {
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
+class SideMenu extends Component {
   constructor(props) {
     super(props);
 
@@ -35,11 +39,16 @@ class SideMenuClass extends Component {
   
   render() {
     return (
-      <Animated.View
-        {...this.state.panResponder.panHandlers}
-        style={[this.state.pan.getLayout(), styles.menu]}>
-        {this.props.children}
-      </Animated.View>
+      <View style={this.props.style}>
+        <View style={styles.menu}>
+          {this.props.menu}
+        </View>
+        <Animated.View
+          {...this.state.panResponder.panHandlers}
+          style={[this.state.pan.getLayout(), styles.children]}>
+          {this.props.children}
+        </Animated.View>
+      </View>
     )
   }
 
@@ -58,9 +67,15 @@ class SideMenuClass extends Component {
 
 var styles = StyleSheet.create({
   menu: {
-    flex: 1,
-    backgroundColor: 'powderblue',
+    position: 'absolute',
+    width: screenWidth,
+    height: screenHeight,
+  },
+  children: {
+    position: 'absolute',
+    width: screenWidth,
+    height: screenHeight,
   },
 });
 
-export default SideMenuClass;
+export default SideMenu;

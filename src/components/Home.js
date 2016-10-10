@@ -10,7 +10,7 @@ class Home extends Component {
     return (
       <View style={styles.default}>
         <Text>
-          Home!
+          The current screen!
         </Text>
       </View>
     )
@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'skyblue',
-    width: 100,
-    height: 100
+    flex: 1
   },
 });
 

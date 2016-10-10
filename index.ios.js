@@ -6,19 +6,21 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  Dimensions,
   View
 } from 'react-native';
 import SideMenu from './src/containers/SideMenu';
-
-var width = Dimensions.get('window').width;
-var height = Dimensions.get('window').height;
+import Home from './src/components/Home';
+import Main from './src/components/Main';
 
 class SideMenuApp extends Component {
   render() {
+    const menu = <Main />;
+    
     return (
       <SideMenu
+        menu={menu}
         style={styles.menu}>
+        <Home />
       </SideMenu>
     );
   }
@@ -28,9 +30,6 @@ const styles = StyleSheet.create({
   menu: {
     flex: 1,
     backgroundColor: 'powderblue',
-    width: width,
-    height: height,
-    justifyContent: 'center',
     alignItems: 'center',
   },
 });
