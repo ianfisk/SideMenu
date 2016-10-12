@@ -23,6 +23,8 @@ class SideMenuApp extends Component {
     return (
       <SideMenu
         menu={menu}
+        menuWidth={200}
+        menuOpenBuffer={100}
         menuStyle={styles.menu}
         childrenStyle={[styles.menu, {paddingTop: 20}]}>
         <Home />
