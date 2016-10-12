@@ -63,7 +63,7 @@ class SideMenu extends Component {
 
   _handlePanResponderMove(e: Object, gestureState: Object) {
     // update pan.x unless pan goes off left of screen. Then set pan to be the very left 
-    if (this._absoluteXValueOfCurrentSceneDuringPan(gestureState) >= 0)
+    if (this._absoluteXValueOfCurrentSceneDuringPan(gestureState.dx) >= 0)
       this.state.pan.setValue({x: gestureState.dx, y: 0});
     else
       this.state.pan.setValue({x: this._isMenuOpen ? -this.props.menuWidth : 0, y: 0});
@@ -72,7 +72,7 @@ class SideMenu extends Component {
   _handlePanResponderEnd(e: Object, gestureState: Object) {
     // pan.x._value == gestureState.dx
     let toValue = {x: 0, y: 0};
-    let shouldMenuOpen = this._menuIsOpenToThreshold(gestureState);
+    let shouldMenuOpen = this._menuIsOpenToThreshold(gestureState.dx);
     if (shouldMenuOpen)
       toValue = {x: this.props.menuWidth, y: 0};
 
@@ -94,18 +94,18 @@ class SideMenu extends Component {
     this._isMenuOpen = shouldMenuOpen;
   }
 
-  _menuIsOpenToThreshold(gestureState: object) {
+  _menuIsOpenToThreshold(xPosition: number) {
     // this.props.menuOpenBuffer defines a buffer to the left of the menuWidth in which to snap the menu open
     let menuOpenBuffer = this.props.menuOpenBuffer ? this.props.menuOpenBuffer : 0;
     return this._isMenuOpen
-      ? gestureState.dx >= -menuOpenBuffer
-      : gestureState.dx >= this.props.menuWidth - menuOpenBuffer;
+      ? xPosition >= -menuOpenBuffer
+      : xPosition >= this.props.menuWidth - menuOpenBuffer;
   }
 
-  _absoluteXValueOfCurrentSceneDuringPan(gestureState: object) {
+  _absoluteXValueOfCurrentSceneDuringPan(xPosition: number) {
     return !this._isMenuOpen
-      ? gestureState.dx
-      : this.props.menuWidth + gestureState.dx
+      ? xPosition
+      : this.props.menuWidth + xPosition;
   }
 }
 
