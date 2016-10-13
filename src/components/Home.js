@@ -10,7 +10,7 @@ class Home extends Component {
     return (
       <View style={styles.default}>
         <Text>
-          The current screen!
+          Home!
         </Text>
       </View>
     )

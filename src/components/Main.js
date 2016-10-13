@@ -10,7 +10,7 @@ class Main extends Component {
     return (
       <View style={styles.default}>
         <Text>
-          Menu!
+          Main!
         </Text>
       </View>
     )
@@ -19,10 +19,10 @@ class Main extends Component {
 
 const styles = StyleSheet.create({
   default: {
-    flex: 1,
-    padding: 10,
     justifyContent: 'center',
-    backgroundColor: 'steelblue',
+    alignItems: 'center',
+    backgroundColor: 'skyblue',
+    flex: 1
   },
 });
 

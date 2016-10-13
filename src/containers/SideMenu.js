@@ -36,9 +36,14 @@ class SideMenu extends Component {
 
     // bindings
     this._menuIsOpenToThreshold = this._menuIsOpenToThreshold.bind(this);
+    this._openOrCloseMenu = this._openOrCloseMenu.bind(this);
     this._absoluteXValueOfCurrentSceneDuringPan = this._absoluteXValueOfCurrentSceneDuringPan.bind(this);
   }
-  
+
+  componentWillReceiveProps(nextProps: object) {
+      this._openOrCloseMenu(nextProps.openMenu)
+  }
+
   render() {
     return (
       <View>
@@ -48,6 +53,7 @@ class SideMenu extends Component {
         <Animated.View
           {...this.state.panResponder.panHandlers}
           style={[this.state.pan.getLayout(), styles.absolutePosition, this.props.childrenStyle]}>
+          {this.props.headerComponent}
           {this.props.children}
         </Animated.View>
       </View>
@@ -70,18 +76,18 @@ class SideMenu extends Component {
   }
 
   _handlePanResponderEnd(e: Object, gestureState: Object) {
-    // pan.x._value == gestureState.dx
-    let toValue = {x: 0, y: 0};
-    let shouldMenuOpen = this._menuIsOpenToThreshold(gestureState.dx);
-    if (shouldMenuOpen)
-      toValue = {x: this.props.menuWidth, y: 0};
-
     // Set x value to be absolute position because the animation is from an offset of 0,
     // and currently the offset may be the menuWidth
     if (this._isMenuOpen)
       this.state.pan.setValue({x: this.props.menuWidth + this.state.pan.x._value, y: 0});
 
     // reset the offset to 0 because we are manually setting the x value to be absolute
+    let shouldMenuOpen = this._menuIsOpenToThreshold(gestureState.dx);
+    this._openOrCloseMenu(shouldMenuOpen);
+  }
+
+  _openOrCloseMenu(openMenu: bool) {
+    let toValue = openMenu ? {x: this.props.menuWidth, y: 0} : {x: 0, y: 0};
     this.state.pan.setOffset({x: 0});
     Animated.spring(
       this.state.pan,
@@ -91,7 +97,7 @@ class SideMenu extends Component {
       }
     ).start();
 
-    this._isMenuOpen = shouldMenuOpen;
+    this._isMenuOpen = openMenu;
   }
 
   _menuIsOpenToThreshold(xPosition: number) {
