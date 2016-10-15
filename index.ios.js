@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  Dimensions,
   StyleSheet,
   Text,
   View
@@ -15,9 +14,6 @@ import Main from './src/components/Main';
 import Menu from './src/components/Menu';
 import SideMenu from './src/containers/SideMenu';
 
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-
 class SideMenuApp extends Component {
   constructor(props) {
     super(props);
@@ -25,6 +21,12 @@ class SideMenuApp extends Component {
       route: 'Home',
       openMenu: false,
     };
+  }
+
+  handleHeaderPress(route: string) {
+    this.setState({
+      openMenu: true
+    });
   }
   
   handleMenuPress(route: string) {
@@ -48,11 +50,7 @@ class SideMenuApp extends Component {
     const header =
       <Header
         title={this.state.route.capitalize()}
-        onPress={() => {
-          this.setState({
-            openMenu: true
-          });
-        }}
+        onPress={() => this.handleHeaderPress()}
       />;
 
     const currentScene = this.getCurrentSceneForRoute();
@@ -63,9 +61,7 @@ class SideMenuApp extends Component {
         menu={menu}
         menuWidth={200}
         menuOpenBuffer={100}
-        menuStyle={styles.menu}
-        headerComponent={header}
-        childrenStyle={styles.menu}>
+        headerComponent={header}>
         {currentScene}
       </SideMenu>
     );
@@ -75,12 +71,5 @@ class SideMenuApp extends Component {
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
-
-const styles = StyleSheet.create({
-  menu: {
-    width: screenWidth,
-    height: screenHeight,
-  },
-});
 
 AppRegistry.registerComponent('SideMenuApp', () => SideMenuApp);

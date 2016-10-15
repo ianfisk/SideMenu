@@ -1,9 +1,10 @@
 // @flow
 'use strict';
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   Animated,
+  Dimensions,
   PanResponder,
   StyleSheet,
   Text,
@@ -12,18 +13,29 @@ import {
 import Home from '../components/Home';
 import Main from '../components/Main';
 
-class SideMenu extends Component {
-  constructor(props) {
-    // TODO: prop types and validation... must have non neg menuWidth, menuOpenBuffer <= menuWidth
-    // TODO: Don't allow swiping the current screen past the leftmost bound of the menu no matter the size/margins of the menu
-    // TODO: if menu/children styles aren't passed, default to screen width/height
-    super(props);
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
+class SideMenu extends Component {
+  static propTypes = {
+    headerComponent: PropTypes.element,
+    height: PropTypes.number,
+    menu: PropTypes.element,
+    menuWidth: PropTypes.number.isRequired,
+    menuOpenBuffer: PropTypes.number.isRequired,
+    openMenu: PropTypes.bool,
+    width: PropTypes.number,
+  }
+  
+  constructor(props) {
+    super(props);
     this.state = {
       pan: new Animated.ValueXY(),
       panResponder: PanResponder.create({
         onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: (evt, gestureState) => {
+          return gestureState.dx != 0 && gestureState.dy != 0;
+        },
         onPanResponderGrant: this._handlePanResponderGrant.bind(this),
         onPanResponderMove: this._handlePanResponderMove.bind(this),
         onPanResponderRelease: this._handlePanResponderEnd.bind(this),
@@ -41,18 +53,24 @@ class SideMenu extends Component {
   }
 
   componentWillReceiveProps(nextProps: object) {
-      this._openOrCloseMenu(nextProps.openMenu)
+    this._openOrCloseMenu(nextProps.openMenu)
   }
 
   render() {
+    let menuStyle = {
+      position: 'absolute',
+      width: this.props.width ? this.props.width : screenWidth,
+      height: this.props.height ? this.props.height : screenHeight
+    };
+
     return (
       <View>
-        <View style={[styles.absolutePosition, this.props.menuStyle]}>
+        <View style={menuStyle}>
           {this.props.menu}
         </View>
         <Animated.View
           {...this.state.panResponder.panHandlers}
-          style={[this.state.pan.getLayout(), styles.absolutePosition, this.props.childrenStyle]}>
+          style={[this.state.pan.getLayout(), menuStyle]}>
           {this.props.headerComponent}
           {this.props.children}
         </Animated.View>
@@ -92,8 +110,7 @@ class SideMenu extends Component {
     Animated.spring(
       this.state.pan,
       {
-        toValue: toValue,
-        friction: 9
+        toValue: toValue
       }
     ).start();
 
@@ -114,11 +131,5 @@ class SideMenu extends Component {
       : this.props.menuWidth + xPosition;
   }
 }
-
-var styles = StyleSheet.create({
-  absolutePosition: {
-    position: 'absolute',
-  },
-});
 
 export default SideMenu;

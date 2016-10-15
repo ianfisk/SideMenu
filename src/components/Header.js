@@ -9,7 +9,9 @@ import {
 const Header = (props) => {
   return (
     <View style={styles.default}>
-      <TouchableHighlight onPress={props.onPress}>
+      <TouchableHighlight
+        style={{width: 75, height: 75, justifyContent: 'center', alignItems: 'center',}}
+        onPress={() => props.onPress()}>
         <Text>
           {props.title}
         </Text>
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'lightblue',
-    height: 50
+    height: 75
   },
 });
 
