@@ -10,6 +10,7 @@ import {
   Text,
   View
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import Home from '../components/Home';
 import Main from '../components/Main';
 
@@ -24,6 +25,7 @@ class SideMenu extends Component {
     menuWidth: PropTypes.number.isRequired,
     menuOpenBuffer: PropTypes.number.isRequired,
     openMenu: PropTypes.bool,
+    useLinearGradient: PropTypes.bool,
     width: PropTypes.number,
   }
   
@@ -60,7 +62,7 @@ class SideMenu extends Component {
     let menuStyle = {
       position: 'absolute',
       width: this.props.width ? this.props.width : screenWidth,
-      height: this.props.height ? this.props.height : screenHeight
+      height: this.props.height ? this.props.height : screenHeight,
     };
 
     return (
@@ -71,8 +73,19 @@ class SideMenu extends Component {
         <Animated.View
           {...this.state.panResponder.panHandlers}
           style={[this.state.pan.getLayout(), menuStyle]}>
-          {this.props.headerComponent}
-          {this.props.children}
+          <View style={this.props.useLinearGradient ? styles.sceneContainer : [styles.sceneContainer, {marginLeft: 0}]}>
+              {this.props.useLinearGradient ?
+                <LinearGradient
+                  start={[0.0, 0.0]} end={[1.0, 0.0]}
+                  colors={['transparent', 'rgba(0, 0, 0, 0.3)']}
+                  style={styles.linearGradient}
+                />
+                : <View />}
+              <View style={{flex: 1}}>
+                {this.props.headerComponent}
+                {this.props.children}
+              </View>
+          </View>
         </Animated.View>
       </View>
     )
@@ -131,5 +144,16 @@ class SideMenu extends Component {
       : this.props.menuWidth + xPosition;
   }
 }
+
+const styles = StyleSheet.create({
+  sceneContainer: {
+    flex: 1,
+    marginLeft: -15,
+    flexDirection: 'row'
+  },
+  linearGradient: {
+    width: 15
+  }
+});
 
 export default SideMenu;

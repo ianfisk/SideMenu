@@ -61,7 +61,8 @@ class SideMenuApp extends Component {
         menu={menu}
         menuWidth={200}
         menuOpenBuffer={100}
-        headerComponent={header}>
+        headerComponent={header}
+        useLinearGradient={true}>
         {currentScene}
       </SideMenu>
     );
